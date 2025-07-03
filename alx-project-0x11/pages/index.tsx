@@ -1,11 +1,13 @@
 import ImageCard from "@/components/common/ImageCard";
+import { ImageProps } from "@/interfaces";
 import React, { useState } from "react";
+
 
 const Home: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+   const [generatedImages, setGeneratedImages]= useState<ImageProps[]>([]);
 
    const handleGenerateImage = async () => {
     setIsLoading(true);
@@ -20,13 +22,13 @@ const Home: React.FC = () => {
 
     if (!resp.ok) {
       setIsLoading(false)
-     // alert("Failed to generate image.");  // addded
       return;
     }
 
     const data = await resp.json()
-     // setImageUrl(data.message); // ✅ show image
-    setIsLoading(false)
+        setIsLoading(false);
+        setImageUrl(data?.message);
+        setGeneratedImages((prev)=>[...prev,{ imageUrl: data?.message, prompt } ]);
   };
 
   return (
@@ -54,9 +56,33 @@ const Home: React.FC = () => {
             }
           </button>
         </div>
-
+       
         {imageUrl && <ImageCard action={() => setImageUrl(imageUrl)} imageUrl={imageUrl} prompt={prompt} />}
       </div>
+          
+    { generatedImages.length ? (
+          <div className="mt-6">
+            <h3 className="text-xl text-center mb-2">Generated Images</h3>
+            <div className="pb-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 border max-w-full md:max-w-[1100px] p-2 overflow-y-scroll h-fit">
+              {generatedImages?.map(
+                ({ imageUrl, prompt }: ImageProps, index) => (
+                  <ImageCard
+                    action={() => setImageUrl(imageUrl)}
+                    imageUrl={imageUrl}
+                    prompt={prompt}
+                    key={index}
+                    width="w-full"
+                    height="h-40"
+                  />
+                )
+              )}
+            </div>
+          </div>
+
+        ) : ""
+      }
+
+
     </div>
   );
 };
