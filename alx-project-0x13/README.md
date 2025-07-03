@@ -6,4 +6,4 @@
 
 Make the code cleaner, easier to maintain, and reusable by extracting the image generation logic (`handleGenerateImage`) into a custom hook.
 
-1. implemnted it in the pages/index.ts
+implemnted it in the pages/index.ts
