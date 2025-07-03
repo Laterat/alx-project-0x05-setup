@@ -1,17 +1,14 @@
-
-import useFetchData from "@/hooks/useFetchData";
 import ImageCard from "@/components/common/ImageCard";
+import useFetchData from "@/hooks/useFetchData";
 import { ImageProps } from "@/interfaces";
 import React, { useEffect, useState } from "react";
-
 
 const Home: React.FC = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
   const { isLoading, responseData, generatedImages, fetchData } = useFetchData<any, { prompt: string}>();
- 
- 
- const handleGenerateImage =  () => {
+
+  const handleGenerateImage =  () => {
     fetchData('/api/generate-image', { prompt })
   }
 
@@ -49,14 +46,14 @@ const Home: React.FC = () => {
             }
           </button>
         </div>
-       
-        {imageUrl && <ImageCard action={() => setImageUrl(imageUrl)} imageUrl={imageUrl} prompt={prompt} />}
+
+        {responseData?.message && <ImageCard action={() => setImageUrl( imageUrl)} imageUrl={imageUrl} prompt={prompt} />}
       </div>
-          
-    { generatedImages.length ? (
-          <div className="mt-6">
-            <h3 className="text-xl text-center mb-2">Generated Images</h3>
-            <div className="pb-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 border max-w-full md:max-w-[1100px] p-2 overflow-y-scroll h-fit">
+      {
+        generatedImages.length ? (
+          <div className="">
+            <h3 className="text-xl text-center mb-4">Generated Images</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 border max-w-full md:max-w-[1100px] p-2 overflow-y-scroll h-96">
               {generatedImages?.map(
                 ({ imageUrl, prompt }: ImageProps, index) => (
                   <ImageCard
@@ -74,8 +71,6 @@ const Home: React.FC = () => {
 
         ) : ""
       }
-
-
     </div>
   );
 };

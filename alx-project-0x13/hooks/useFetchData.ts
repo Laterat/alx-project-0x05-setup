@@ -33,6 +33,7 @@ const useFetchData = <T, R  extends { prompt: string }>() => {
       setIsLoading(false)
     }
   }
+  
   return {
     isLoading,
     responseData,
