@@ -5,7 +5,8 @@ import { NextApiRequest, NextApiResponse } from "next"
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   const gptApiKey = process.env.NEXT_PUBLIC_GPT_API_KEY;
-  const gptUrl = "https://chatgpt-42.p.rapidapi.com/texttoimage";
+ const gptUrl = "https://chatgpt-42.p.rapidapi.com/texttoimage3"; // ✅ correct endpoint
+
 
   if (!gptApiKey || !gptUrl) {
     return response.status(500).json({ error: "API key or URL is missing in environment variables" });
@@ -24,7 +25,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       headers: {
         'x-rapidapi-key': gptApiKey.trim(),
         'x-rapidapi-host': 'chatgpt-42.p.rapidapi.com',
-		    'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       },
     });
 
