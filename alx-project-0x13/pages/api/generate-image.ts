@@ -29,9 +29,17 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       },
     });
 
+    
+    // if (!res.ok) {
+    //   throw new Error("Failed to fetch from DALLE");
+    // }
+     
     if (!res.ok) {
-      throw new Error("Failed to fetch from DALLE");
-    }
+  if (res.status === 429) {
+    return response.status(429).json({ error: "Rate limit exceeded" });
+  }
+  return response.status(res.status).json({ error: "Failed to fetch from DALLE" });
+}
 
     const data = await res.json();
 
